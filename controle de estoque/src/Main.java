@@ -1,20 +1,29 @@
 import java.util.Scanner;
 
 public class Main {
-
     public static Estoque estoque = new Estoque();
 
     public static void main(String[] args) {
         int opcao;
+        Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            Scanner scanner = new Scanner(System.in);
-
             mostraMenu();
             opcao = scanner.nextInt();
 
             switch (opcao) {
                 case 1:
+                    System.out.println("Informe o ID do produto");
+                    int idProduto = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.println("Informe o nome do produto");
+                    String nome = scanner.nextLine();
+                    System.out.println("Informe o preço do produto");
+                    double preco = scanner.nextDouble();
+                    System.out.println("Informe a quantidade em estoque");
+                    int quantidade = scanner.nextInt();
+                    estoque.produtos.add(new Produto(idProduto, nome, preco, quantidade));
+                    System.out.println("Produto cadastrado com sucesso.");
                     break;
                 case 2:
                     estoque.listarProdutos();
@@ -65,3 +74,4 @@ public class Main {
         return id;
     }
 }
+
