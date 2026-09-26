@@ -1,60 +1,71 @@
+import java.util.Locale;
+
 public class Produto {
-    private int id;
-    private String nome;
-    private double preco;
-    private int quantidadeEstoque;
+    private final int id;
+    private final String nome;
+    private final double preco;
+    private int quantidade;
 
-    public Produto(){}
+    public Produto(int id, String nome, double preco, int quantidade) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("O ID deve ser maior que zero.");
+        }
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome não pode ficar vazio.");
+        }
+        if (preco < 0 || Double.isNaN(preco) || Double.isInfinite(preco)) {
+            throw new IllegalArgumentException("O preço deve ser um valor válido e não negativo.");
+        }
+        if (quantidade < 0) {
+            throw new IllegalArgumentException("A quantidade não pode ser negativa.");
+        }
 
-    public Produto(int id, String nome, double preco, int quantidadeEstoque) {
         this.id = id;
-        this.nome = nome;
+        this.nome = nome.trim();
         this.preco = preco;
-        this.quantidadeEstoque = quantidadeEstoque;
-    }
-
-    public void adicionar(int quantidade){
-        quantidadeEstoque += quantidade;
-    }
-
-    public void remover(int quantidade){
-        quantidadeEstoque -= quantidade;
-    }
-
-    public void exibirDados(){
-        System.out.println("ID: " + id);
-        System.out.println("Nome: " + nome);
-        System.out.println("Preço: R$" + preco);
-        System.out.println("Quantidade em estoque: " + quantidadeEstoque);
+        this.quantidade = quantidade;
     }
 
     public int getId() {
         return id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
+
     public String getNome() {
         return nome;
     }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+
     public double getPreco() {
         return preco;
     }
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-    public int getQuantidadeEstoque() {
-        return quantidadeEstoque;
-    }
-    public void setQuantidadeEstoque(int quantidadeEstoque) {
-        this.quantidadeEstoque = quantidadeEstoque;
+
+    public int getQuantidade() {
+        return quantidade;
     }
 
-    @Override
-    public String toString(){
-        return "ID: " + id + " | Nome: " + nome + " | Preço: R$" + preco + " | Quantidade em estoque: " + quantidadeEstoque;
+    public boolean adicionar(int quantidade) {
+        if (quantidade <= 0 || this.quantidade > Integer.MAX_VALUE - quantidade) {
+            return false;
+        }
+        this.quantidade += quantidade;
+        return true;
+    }
+
+    public boolean remover(int quantidade) {
+        if (quantidade <= 0 || quantidade > this.quantidade) {
+            return false;
+        }
+        this.quantidade -= quantidade;
+        return true;
+    }
+
+    public void exibirDados() {
+        System.out.println("ID: " + id);
+        System.out.println("Nome: " + nome);
+        System.out.println("Preço: " + formatarPreco());
+        System.out.println("Quantidade: " + quantidade);
+    }
+
+    public String formatarPreco() {
+        return String.format(Locale.forLanguageTag("pt-BR"), "R$ %.2f", preco);
     }
 }
